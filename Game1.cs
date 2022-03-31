@@ -6,7 +6,7 @@ namespace SpaceInvadersGame
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D alienTexture;
         private Texture2D bulletTexture;
