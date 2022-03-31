@@ -14,8 +14,8 @@ namespace SpaceInvadersGame
         private Texture2D shieldTexture;
         private SpriteFont gameFont;
 
-        Player player = new Player();
-        Controller gameController = new Controller();
+        Player player;
+        Controller gameController;
 
         public Game1()
         {
@@ -30,6 +30,8 @@ namespace SpaceInvadersGame
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
+            player = new Player(_graphics);
+            gameController = new Controller();
 
             base.Initialize();
         }
