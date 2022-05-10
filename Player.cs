@@ -52,6 +52,7 @@ namespace SpaceInvadersGame
                 }
 
             }
+           
 
             if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
             {

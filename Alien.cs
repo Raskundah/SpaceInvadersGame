@@ -10,8 +10,23 @@ namespace SpaceInvadersGame
 {
     class Alien
     {
-       public Vector2 position = new Vector2(0, 0);
-        public float speed = 200.0f; 
+        public static List<Alien> aliens = new List<Alien>();
+
+
+        public Vector2 position = new Vector2(0, 0);
+        public float speed = 200.0f;
+        Random alienShooting = new Random();
+        int number;
+
+        public Alien()
+        {
+           number = alienShooting.Next(1, 10);
+        }
+        
+
+
+
+
 
         public bool Update(GameTime gameTime, int textWidth)
         {

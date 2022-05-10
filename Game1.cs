@@ -9,6 +9,8 @@ namespace SpaceInvadersGame
 {
     public class Game1 : Game
     {
+
+
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D alienTexture;
@@ -17,10 +19,10 @@ namespace SpaceInvadersGame
         private Texture2D shieldTexture;
         private SpriteFont gameFont;
         private int score;
+        public bool gameOver = false;
 
         private int[] highScore = new int[5] { 0, 0, 0, 0, 0 };
 
-        List<Alien> aliens= new List<Alien>();
 
         
         Player player;
@@ -58,7 +60,7 @@ namespace SpaceInvadersGame
 
                 
                     
-                aliens.Add(newAlien);
+               Alien.aliens.Add(newAlien);
 
                 startingPosition += 150;
 
@@ -88,12 +90,14 @@ namespace SpaceInvadersGame
 
         protected override void Update(GameTime gameTime)
         {
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             bool hasReached = false;
-            for (int i = 0; i < aliens.Count; i++)
+            for (int i = 0; i < Alien.aliens.Count; i++)
             {
-                if (aliens[i].Update(gameTime, alienTexture.Width) && !hasReached)
+                if (Alien.aliens[i].Update(gameTime, alienTexture.Width) && !hasReached)
                 {
                     hasReached = true;
                 }
@@ -101,11 +105,16 @@ namespace SpaceInvadersGame
 
             if (hasReached)
             {
-                foreach (Alien alien in aliens)
+                foreach (Alien alien in Alien.aliens)
                 {
                     alien.position.Y += 50;
                     alien.speed *= -1;
                     alien.Update(gameTime, alienTexture.Width);
+
+                    if (alien.position.Y >= (int)_graphics.PreferredBackBufferHeight * 0.25)
+                    {
+                        gameOver = true;
+                    }
 
 
                 }
@@ -119,6 +128,8 @@ namespace SpaceInvadersGame
             {
                 bullets.BulletUpdate(gameTime);
             }
+
+
         }
 
         protected override void Draw(GameTime gameTime)
@@ -130,9 +141,9 @@ namespace SpaceInvadersGame
 
             _spriteBatch.Begin();
 
-            for (int i = 0; i < aliens.Count; i++)
+            for (int i = 0; i < Alien.aliens.Count; i++)
             {
-                _spriteBatch.Draw(alienTexture, aliens[i].position, Color.White);
+                _spriteBatch.Draw(alienTexture, Alien.aliens[i].position, Color.White);
 
             }
 
@@ -154,9 +165,6 @@ namespace SpaceInvadersGame
 
                 posModifier += _graphics.PreferredBackBufferWidth / 3 - 150;
             }
-
-
-
 
 
             _spriteBatch.End();

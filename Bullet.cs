@@ -12,6 +12,7 @@ namespace SpaceInvadersGame
 {
     class Bullet
     {
+
         public static List<Bullet> bullets = new List<Bullet>();
 
         public int bulletSpeed = 150;
