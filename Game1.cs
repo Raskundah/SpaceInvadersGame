@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 
 namespace SpaceInvadersGame
 {
@@ -15,11 +17,12 @@ namespace SpaceInvadersGame
         private Texture2D shieldTexture;
         private SpriteFont gameFont;
         private int score;
+
         private int[] highScore = new int[5] { 0, 0, 0, 0, 0 };
+
         List<Alien> aliens= new List<Alien>();
 
-
-        Bullet bullet = new Bullet();
+        
         Player player;
         Controller gameController;
 
@@ -109,8 +112,13 @@ namespace SpaceInvadersGame
             }
 
             player.PlayerUpdate(gameTime);
-            bullet.BulletUpdate(gameTime); 
+            
             base.Update(gameTime);
+
+            foreach(Bullet bullets in Bullet.bullets)
+            {
+                bullets.BulletUpdate(gameTime);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -130,12 +138,27 @@ namespace SpaceInvadersGame
 
             _spriteBatch.Draw(playerTexture, player.playerPosition, Color.White);
 
-            if (bullet != null && bullet.isFired == true)
+            foreach (Bullet bullets in Bullet.bullets)
             {
-                _spriteBatch.Draw(bulletTexture, new Vector2 (player.playerPosition.X + (playerTexture.Width/2) - 4, player.playerPosition.Y - 20), Color.White);
-
+                _spriteBatch.Draw(bulletTexture, new Vector2(bullets.bulletPosition.X + 27 , bullets.bulletPosition.Y - 20), Color.White);
             }
-            
+
+            int posModifier = _graphics.PreferredBackBufferWidth / 3 - 175;
+
+
+            for (int i = 0; i < 3; ++i)
+            {
+
+
+                _spriteBatch.Draw(shieldTexture, new Vector2((0 + posModifier), _graphics.PreferredBackBufferHeight - (int)(_graphics.PreferredBackBufferHeight * 0.2f)), Color.White);
+
+                posModifier += _graphics.PreferredBackBufferWidth / 3 - 150;
+            }
+
+
+
+
+
             _spriteBatch.End();
 
 

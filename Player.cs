@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
+
 
 namespace SpaceInvadersGame
 {
@@ -13,6 +15,7 @@ namespace SpaceInvadersGame
         private GraphicsDeviceManager _graphics;
         public Vector2 playerPosition = new Vector2(0, 0);
         private int speed = 150;
+        private KeyboardState kStateOld = Keyboard.GetState();
 
         public Player(GraphicsDeviceManager graphics)
         {
@@ -49,6 +52,14 @@ namespace SpaceInvadersGame
                 }
 
             }
+
+            if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
+            {
+                Bullet.bullets.Add(new Bullet(playerPosition));
+
+            }
+
+            kStateOld = kstate;
         }
         
     }
