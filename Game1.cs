@@ -23,7 +23,9 @@ namespace SpaceInvadersGame
         private SpriteFont textFont;
         private SpriteFont gameFont;
         private int score;
+        public int alienValue = 100;
         public bool gameOver = false;
+        public float scoreMultiplier = 1.1f;
 
         // currently vestigial code for a high score system.
 
@@ -31,6 +33,7 @@ namespace SpaceInvadersGame
 
 
         //create instances of a class.
+        Alien alien;
         Player player;
         Controller gameController;
 
@@ -49,37 +52,15 @@ namespace SpaceInvadersGame
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.ApplyChanges();
+
+            alien = new Alien();
             player = new Player(_graphics);
             gameController = new Controller();
 
-            // define starting alien positions.
 
-            int startingPosition = 50;
-            int yPos = 50;
-            
-           // alien spawn loop. to be modified to allow for respawning of new aliens.
+            alien.SpawnAlien();
 
-            for (int i = 0; i < 12; i++)
-            {
-                Alien newAlien = new Alien();
 
-                newAlien.position.X = startingPosition;
-                newAlien.position.Y = yPos;
-
-                
-                    
-               Alien.aliens.Add(newAlien);
-
-                startingPosition += 150;
-
-                if (i == 5)
-                {
-                    yPos += 100;
-                    startingPosition = 50;
-
-                }
-            }
-             
             base.Initialize();
         }
 
@@ -133,11 +114,10 @@ namespace SpaceInvadersGame
 
             player.PlayerUpdate(gameTime); // calls frame updates for the player 
             
-            base.Update(gameTime);
 
             foreach(Bullet bullets in Bullet.bullets)
             {
-                bullets.BulletUpdate(gameTime); //uipdates each instance of bullet class.
+                bullets.BulletUpdate(gameTime); //updates each instance of bullet class.
             }
 
             foreach(Bullet bullets in Bullet.bullets) // collision code.
@@ -148,7 +128,7 @@ namespace SpaceInvadersGame
                     if (Vector2.Distance(bullets.bulletPosition, aliens.position) < sum)
                     { bullets.Collided = true;
                         aliens.Dead = true;
-                        score += 100;
+                        score += alienValue;
                     }
                 
                 }
@@ -156,6 +136,14 @@ namespace SpaceInvadersGame
 
             Bullet.bullets.RemoveAll(p => p.Collided); // remove collided elements.
             Alien.aliens.RemoveAll(d => d.Dead);
+
+            if(Alien.aliens.Count == 0)
+            {
+                alien.SpawnAlien();
+                alienValue = (int)(alienValue * scoreMultiplier);
+            }
+
+            base.Update(gameTime);
 
         }
         protected override void Draw(GameTime gameTime)

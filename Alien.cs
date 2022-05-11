@@ -22,9 +22,9 @@ namespace SpaceInvadersGame
         Random alienShooting = new Random();
         int number;
 
-        public Alien(int maxAliens) // pseudo random constructor to choose a random alien.
+        public Alien() // pseudo random constructor to choose a random alien.
         {
-            number = alienShooting.Next(1, maxAliens);
+            number = alienShooting.Next(1, 12);
         }
 
 
@@ -35,12 +35,43 @@ namespace SpaceInvadersGame
 
             if (position.X >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - textWidth || position.X <= 0)
             {
+
                 return true;
             }
 
             return false;
         }
 
+        public void SpawnAlien()
+        {
+            // define starting alien positions.
+
+            int startingPosition = 50;
+            int yPos = 50;
+
+            // alien spawn loop. to be modified to allow for respawning of new aliens.
+
+            for (int i = 0; i < 12; i++)
+            {
+                Alien newAlien = new Alien();
+
+                newAlien.position.X = startingPosition;
+                newAlien.position.Y = yPos;
+
+                Alien.aliens.Add(newAlien);
+
+                startingPosition += 150;
+
+                if (i == 5)
+                {
+                    yPos += 100;
+                    startingPosition = 50;
+
+                }
+            }
+
+        }
+      
         public bool Dead // death logic properties.
         {
             get { return dead; }

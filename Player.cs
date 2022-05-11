@@ -16,10 +16,11 @@ namespace SpaceInvadersGame
 
         private GraphicsDeviceManager _graphics;
         public Vector2 playerPosition = new Vector2(0, 0);
-        private int speed = 150;
+        private int speed = 300;
         private KeyboardState kStateOld = Keyboard.GetState();
-        private static double timer = 2d;
-        private static double maxTimer = 2d;
+        private double timer = 0d;
+        private double maxTimer = 1d;
+        private bool canShoot = true;
 
         public Player(GraphicsDeviceManager graphics)
         {
@@ -60,21 +61,31 @@ namespace SpaceInvadersGame
             }
 
 
-            if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
+            // handles shooting
+
+            if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space) && (canShoot))
             {
                 Bullet.bullets.Add(new Bullet(playerPosition));
+                timer = maxTimer;
 
 
             }
 
             kStateOld = kstate;
 
-            timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            // shoot timer to limit projectile spam.
 
-
-            if (timer <= 0)
+            if (timer > 0)
             {
-                timer = maxTimer;
+                timer -= gameTime.ElapsedGameTime.TotalSeconds;
+                canShoot = false;
+
+            }
+
+            else
+            {
+                
+                canShoot = true;
             }
         }
         
