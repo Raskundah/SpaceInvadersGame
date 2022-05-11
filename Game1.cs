@@ -6,10 +6,13 @@ using System.Diagnostics;
 
 
 namespace SpaceInvadersGame
+
+    // coded by ian barrie
+    // 11/05/2022
 {
     public class Game1 : Game
     {
-
+        // define initial variables
 
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -22,10 +25,12 @@ namespace SpaceInvadersGame
         private int score;
         public bool gameOver = false;
 
+        // currently vestigial code for a high score system.
+
         private int[] highScore = new int[5] { 0, 0, 0, 0, 0 };
 
 
-        
+        //create instances of a class.
         Player player;
         Controller gameController;
 
@@ -38,6 +43,8 @@ namespace SpaceInvadersGame
 
         protected override void Initialize()
         {
+
+            // sets window size to max screen size in windowed mode.
            
             _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -45,12 +52,12 @@ namespace SpaceInvadersGame
             player = new Player(_graphics);
             gameController = new Controller();
 
-            
+            // define starting alien positions.
 
             int startingPosition = 50;
             int yPos = 50;
             
-           
+           // alien spawn loop. to be modified to allow for respawning of new aliens.
 
             for (int i = 0; i < 12; i++)
             {
@@ -76,7 +83,10 @@ namespace SpaceInvadersGame
             base.Initialize();
         }
 
+
         protected override void LoadContent()
+
+            //load files from content folder into required addresses
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             alienTexture = Content.Load<Texture2D>("Alien");
@@ -94,6 +104,9 @@ namespace SpaceInvadersGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             bool hasReached = false;
+
+            // code to check if aliens have reached the side of the screen.
+
             for (int i = 0; i < Alien.aliens.Count; i++)
             {
                 if (Alien.aliens[i].Update(gameTime, alienTexture.Width) && !hasReached)
@@ -118,16 +131,16 @@ namespace SpaceInvadersGame
                 }
             }
 
-            player.PlayerUpdate(gameTime);
+            player.PlayerUpdate(gameTime); // calls frame updates for the player 
             
             base.Update(gameTime);
 
             foreach(Bullet bullets in Bullet.bullets)
             {
-                bullets.BulletUpdate(gameTime);
+                bullets.BulletUpdate(gameTime); //uipdates each instance of bullet class.
             }
 
-            foreach(Bullet bullets in Bullet.bullets)
+            foreach(Bullet bullets in Bullet.bullets) // collision code.
             {
                 foreach (Alien aliens in Alien.aliens)
                 {
@@ -135,12 +148,13 @@ namespace SpaceInvadersGame
                     if (Vector2.Distance(bullets.bulletPosition, aliens.position) < sum)
                     { bullets.Collided = true;
                         aliens.Dead = true;
+                        score += 100;
                     }
                 
                 }
             }
 
-            Bullet.bullets.RemoveAll(p => p.Collided);
+            Bullet.bullets.RemoveAll(p => p.Collided); // remove collided elements.
             Alien.aliens.RemoveAll(d => d.Dead);
 
         }
@@ -158,6 +172,8 @@ namespace SpaceInvadersGame
                 _spriteBatch.Draw(alienTexture, Alien.aliens[i].position, Color.White);
 
             }
+
+            _spriteBatch.DrawString(textFont, "Score: " + score, new Vector2(10, 10), Color.White);
 
             _spriteBatch.Draw(playerTexture, player.playerPosition, Color.White);
 

@@ -12,6 +12,8 @@ namespace SpaceInvadersGame
     class Player
 
     {
+        // fields
+
         private GraphicsDeviceManager _graphics;
         public Vector2 playerPosition = new Vector2(0, 0);
         private int speed = 150;
@@ -22,13 +24,15 @@ namespace SpaceInvadersGame
         public Player(GraphicsDeviceManager graphics)
         {
             _graphics = graphics;
-            playerPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight * 0.9f);
+            playerPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight * 0.9f); // janky code/constructor to make graphics calls work in the class
         }
 
         public void PlayerUpdate(GameTime gameTime)
         {
             KeyboardState kstate = Keyboard.GetState();
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds; // using delta time to manage consistent speed.
+
+            // movement code for player
 
             if ( kstate.IsKeyDown(Keys.A)||kstate.IsKeyDown(Keys.Left))
             {
