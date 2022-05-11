@@ -15,31 +15,35 @@ namespace SpaceInvadersGame
 
         public Vector2 position = new Vector2(0, 0);
         public float speed = 200.0f;
+        public int radius = 61;
+        private bool dead = false;
         Random alienShooting = new Random();
         int number;
 
         public Alien()
         {
-           number = alienShooting.Next(1, 10);
+            number = alienShooting.Next(1, 10);
         }
-        
-
-
-
 
 
         public bool Update(GameTime gameTime, int textWidth)
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            position.X += speed * dt;           
+            position.X += speed * dt;
 
-            if(position.X >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - textWidth || position.X <= 0)
+            if (position.X >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - textWidth || position.X <= 0)
             {
                 // speed += 1.0f;
                 return true;
             }
 
             return false;
+        }
+
+        public bool Dead
+        {
+            get { return dead; }
+            set { dead = value; }
         }
 
     }

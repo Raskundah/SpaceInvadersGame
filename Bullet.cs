@@ -17,7 +17,9 @@ namespace SpaceInvadersGame
 
         public int bulletSpeed = 150;
         public bool isFired = false;
+        public int radius = 18;
         public Vector2 bulletPosition = new Vector2();
+        private bool collided = false;
 
         public Bullet(Vector2 newPos)
         {
@@ -28,13 +30,13 @@ namespace SpaceInvadersGame
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            bulletPosition.Y -= bulletSpeed * dt;
-
-            
+            bulletPosition.Y -= bulletSpeed * dt;  
         }
 
-
-
-
+        public bool Collided
+        {
+            get { return collided; }
+            set { collided = value; }
+        }
     }
 }

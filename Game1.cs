@@ -17,6 +17,7 @@ namespace SpaceInvadersGame
         private Texture2D bulletTexture;
         private Texture2D playerTexture;
         private Texture2D shieldTexture;
+        private SpriteFont textFont;
         private SpriteFont gameFont;
         private int score;
         public bool gameOver = false;
@@ -71,8 +72,7 @@ namespace SpaceInvadersGame
 
                 }
             }
-                
-
+             
             base.Initialize();
         }
 
@@ -83,11 +83,10 @@ namespace SpaceInvadersGame
             bulletTexture = Content.Load<Texture2D>("Bullet");
             playerTexture = Content.Load<Texture2D>("Ship");
             shieldTexture = Content.Load<Texture2D>("shield");
+            textFont = Content.Load<SpriteFont>("timerFont");
             // gameFont = Content.Load<SpriteFont>("gameFont"); 
-
            
         }
-
         protected override void Update(GameTime gameTime)
         {
 
@@ -116,7 +115,6 @@ namespace SpaceInvadersGame
                         gameOver = true;
                     }
 
-
                 }
             }
 
@@ -129,9 +127,23 @@ namespace SpaceInvadersGame
                 bullets.BulletUpdate(gameTime);
             }
 
+            foreach(Bullet bullets in Bullet.bullets)
+            {
+                foreach (Alien aliens in Alien.aliens)
+                {
+                    int sum = bullets.radius + aliens.radius;
+                    if (Vector2.Distance(bullets.bulletPosition, aliens.position) < sum)
+                    { bullets.Collided = true;
+                        aliens.Dead = true;
+                    }
+                
+                }
+            }
+
+            Bullet.bullets.RemoveAll(p => p.Collided);
+            Alien.aliens.RemoveAll(d => d.Dead);
 
         }
-
         protected override void Draw(GameTime gameTime)
 
         {
@@ -166,9 +178,7 @@ namespace SpaceInvadersGame
                 posModifier += _graphics.PreferredBackBufferWidth / 3 - 150;
             }
 
-
             _spriteBatch.End();
-
 
 
             base.Draw(gameTime);

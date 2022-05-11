@@ -16,6 +16,8 @@ namespace SpaceInvadersGame
         public Vector2 playerPosition = new Vector2(0, 0);
         private int speed = 150;
         private KeyboardState kStateOld = Keyboard.GetState();
+        private static double timer = 2d;
+        private static double maxTimer = 2d;
 
         public Player(GraphicsDeviceManager graphics)
         {
@@ -52,15 +54,24 @@ namespace SpaceInvadersGame
                 }
 
             }
-           
+
 
             if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
             {
                 Bullet.bullets.Add(new Bullet(playerPosition));
 
+
             }
 
             kStateOld = kstate;
+
+            timer -= gameTime.ElapsedGameTime.TotalSeconds;
+
+
+            if (timer <= 0)
+            {
+                timer = maxTimer;
+            }
         }
         
     }

@@ -8,6 +8,10 @@ namespace SpaceInvadersGame
     {
         private int score;
         List<int> highScore = new List<int>();
+        public static double timer = 2d;
+        public static double maxTimer = 2d;
+
+      
 
     }
 }
