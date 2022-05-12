@@ -28,6 +28,9 @@ namespace SpaceInvadersGame
         public float scoreMultiplier = 1.1f;
         Random rand = new Random();
         public int alienNumber;
+        public double timer = 2d;
+        public double maxTimer = 2d;
+
 
 
         // currently vestigial code for a high score system.
@@ -45,8 +48,8 @@ namespace SpaceInvadersGame
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+  
         }
-
         protected override void Initialize()
         {
 
@@ -59,6 +62,8 @@ namespace SpaceInvadersGame
             alien = new Alien();
             player = new Player(_graphics);
             gameController = new Controller();
+
+
 
 
             alien.SpawnAlien();
@@ -183,6 +188,17 @@ namespace SpaceInvadersGame
 
                 alien.SpawnAlien();
                 alienValue = (int)(alienValue * scoreMultiplier);
+            }
+
+            if (timer == 0 && Alien.bottomAliens.Count != 0)
+            {
+                alienNumber = rand.Next(0, Alien.aliens.Count);
+            }
+
+            else if (timer == 0)
+            {
+                alienNumber = rand.Next(0, Alien.aliens.Count);
+
             }
 
             base.Update(gameTime);
