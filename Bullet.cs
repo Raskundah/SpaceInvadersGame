@@ -16,8 +16,9 @@ namespace SpaceInvadersGame
         // define fields for bullet (Player/Enemy)
 
         public static List<Bullet> bullets = new List<Bullet>();
+        public static List<Bullet> alienBullets = new List<Bullet>();
 
-        public int bulletSpeed = 500;
+        private int bulletSpeed = 500;
         public bool isFired = false;
         public int radius = 18;
         public Vector2 bulletPosition = new Vector2();

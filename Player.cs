@@ -10,7 +10,6 @@ using System.Diagnostics;
 namespace SpaceInvadersGame
 {
     class Player
-
     {
         // fields
 
@@ -21,6 +20,7 @@ namespace SpaceInvadersGame
         private double timer = 0d;
         private double maxTimer = 1d;
         private bool canShoot = true;
+        public int lives = 3;
 
         public Player(GraphicsDeviceManager graphics)
         {
@@ -39,19 +39,14 @@ namespace SpaceInvadersGame
             {
                 playerPosition.X -= speed * dt;
 
-                
-
                 if (playerPosition.X <= 0)
                 {
                     playerPosition.Y = 1;
-                }
-                
+                }               
             }
-
             if (kstate.IsKeyDown(Keys.D) || kstate.IsKeyDown(Keys.Right))
             {
                 playerPosition.X += speed * dt;
-
 
                 if (playerPosition.X >= _graphics.PreferredBackBufferWidth - 10)
                 {
@@ -59,16 +54,12 @@ namespace SpaceInvadersGame
                 }
 
             }
-
-
             // handles shooting
 
             if (kstate.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space) && (canShoot))
             {
                 Bullet.bullets.Add(new Bullet(playerPosition));
                 timer = maxTimer;
-
-
             }
 
             kStateOld = kstate;
@@ -79,15 +70,11 @@ namespace SpaceInvadersGame
             {
                 timer -= gameTime.ElapsedGameTime.TotalSeconds;
                 canShoot = false;
-
             }
-
             else
-            {
-                
+            {             
                 canShoot = true;
             }
-        }
-        
+        }      
     }
 }

@@ -16,15 +16,19 @@ namespace SpaceInvadersGame
         // fields
 
         public Vector2 position = new Vector2(0, 0);
-        public float speed = 200.0f;
+        public float speed = 3000.0f;
         public int radius = 61;
         private bool dead = false;
         Random alienShooting = new Random();
-        int number;
+        public int alienNumber;
+        public bool subsequentSpawn = true;
+        private int speedIncrease = 0;
+        private int wavecount = 1;
+
 
         public Alien() // pseudo random constructor to choose a random alien.
         {
-            number = alienShooting.Next(1, 12);
+            alienNumber = alienShooting.Next(0, aliens.Count);
         }
 
 
@@ -45,6 +49,8 @@ namespace SpaceInvadersGame
         public void SpawnAlien()
         {
             // define starting alien positions.
+
+            wavecount++;
 
             int startingPosition = 50;
             int yPos = 50;
@@ -68,8 +74,14 @@ namespace SpaceInvadersGame
                     startingPosition = 50;
 
                 }
-            }
 
+
+                if (wavecount >= 2)
+                {
+                    speedIncrease += 1000;
+                    speed += speedIncrease;
+                }
+            }
         }
       
         public bool Dead // death logic properties.
