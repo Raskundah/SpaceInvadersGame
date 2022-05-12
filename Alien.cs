@@ -11,26 +11,17 @@ namespace SpaceInvadersGame
     class Alien
     {
         public static List<Alien> aliens = new List<Alien>();
-
+        public static List<Alien> bottomAliens = new List<Alien>();
 
         // fields
 
         public Vector2 position = new Vector2(0, 0);
-        public float speed = 3000.0f;
+        public float speed = 300.0f;
         public int radius = 61;
         private bool dead = false;
-        Random alienShooting = new Random();
-        public int alienNumber;
         public bool subsequentSpawn = true;
         private int speedIncrease = 0;
         private int wavecount = 1;
-
-
-        public Alien() // pseudo random constructor to choose a random alien.
-        {
-            alienNumber = alienShooting.Next(0, aliens.Count);
-        }
-
 
         public bool Update(GameTime gameTime, int textWidth) // update function.
         {
@@ -39,13 +30,10 @@ namespace SpaceInvadersGame
 
             if (position.X >= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - textWidth || position.X <= 0)
             {
-
                 return true;
             }
-
             return false;
         }
-
         public void SpawnAlien()
         {
             // define starting alien positions.
@@ -64,7 +52,10 @@ namespace SpaceInvadersGame
                 newAlien.position.X = startingPosition;
                 newAlien.position.Y = yPos;
 
-                Alien.aliens.Add(newAlien);
+                if (i < 4)
+                    Alien.aliens.Add(newAlien);
+                else
+                    Alien.bottomAliens.Add(newAlien);
 
                 startingPosition += 150;
 
@@ -72,18 +63,14 @@ namespace SpaceInvadersGame
                 {
                     yPos += 100;
                     startingPosition = 50;
-
                 }
-
-
                 if (wavecount >= 2)
                 {
                     speedIncrease += 1000;
                     speed += speedIncrease;
                 }
             }
-        }
-      
+        } 
         public bool Dead // death logic properties.
         {
             get { return dead; }

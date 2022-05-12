@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 
 
 namespace SpaceInvadersGame
@@ -25,6 +26,9 @@ namespace SpaceInvadersGame
         public int alienValue = 100;
         public bool gameOver = false;
         public float scoreMultiplier = 1.1f;
+        Random rand = new Random();
+        public int alienNumber;
+
 
         // currently vestigial code for a high score system.
 
@@ -94,6 +98,14 @@ namespace SpaceInvadersGame
                 }
             }
 
+            for (int i = 0; i < Alien.bottomAliens.Count; i++)
+            {
+                if (Alien.bottomAliens[i].Update(gameTime, alienTexture.Width) && !hasReached)
+                {
+                    hasReached = true;
+                }
+            }
+
             if (hasReached)
             {
                 foreach (Alien alien in Alien.aliens)
@@ -102,45 +114,71 @@ namespace SpaceInvadersGame
                     alien.speed *= -1;
                     alien.Update(gameTime, alienTexture.Width);
 
-                    if (alien.position.Y >= _graphics.PreferredBackBufferHeight *0.75)
+                    if (alien.position.Y >= _graphics.PreferredBackBufferHeight * 0.75)
                     {
                         gameOver = true;
                     }
-
                 }
+
+                foreach (Alien alien in Alien.bottomAliens)
+                {
+                    alien.position.Y += 50;
+                    alien.speed *= -1;
+                    alien.Update(gameTime, alienTexture.Width);
+
+                    if (alien.position.Y >= _graphics.PreferredBackBufferHeight * 0.75)
+                    {
+                        gameOver = true;
+                    }
+                }
+
             }
 
             player.PlayerUpdate(gameTime); // calls frame updates for the player 
 
 
-            foreach(Bullet enemyBullet in Bullet.alienBullets)
+            foreach (Bullet enemyBullet in Bullet.alienBullets)
             {
                 enemyBullet.BulletUpdate(gameTime);
             }
 
-            foreach(Bullet bullets in Bullet.bullets)
+            foreach (Bullet bullets in Bullet.bullets)
             {
                 bullets.BulletUpdate(gameTime); //updates each instance of bullet class.
             }
 
-            foreach(Bullet bullets in Bullet.bullets) // collision code.
+            foreach (Bullet bullets in Bullet.bullets) // collision code.
             {
-                foreach (Alien aliens in Alien.aliens) 
+                foreach (Alien aliens in Alien.aliens)
                 {
                     int sum = bullets.radius + aliens.radius;
                     if (Vector2.Distance(bullets.bulletPosition, aliens.position) < sum)
-                    { bullets.Collided = true;
+                    {
+                        bullets.Collided = true;
                         aliens.Dead = true;
                         score += alienValue;
                     }
-                
+
+                }
+
+                foreach (Alien aliens in Alien.bottomAliens)
+                {
+                    int sum = bullets.radius + aliens.radius;
+                    if (Vector2.Distance(bullets.bulletPosition, aliens.position) < sum)
+                    {
+                        bullets.Collided = true;
+                        aliens.Dead = true;
+                        score += alienValue;
+                    }
+
                 }
             }
 
             Bullet.bullets.RemoveAll(p => p.Collided); // remove collided elements.
             Alien.aliens.RemoveAll(d => d.Dead);
+            Alien.bottomAliens.RemoveAll(d => d.Dead);
 
-            if(Alien.aliens.Count == 0)
+            if (Alien.aliens.Count == 0)
             {
 
                 alien.SpawnAlien();
@@ -149,6 +187,7 @@ namespace SpaceInvadersGame
 
             base.Update(gameTime);
 
+            
         }
         protected override void Draw(GameTime gameTime)
 
@@ -168,6 +207,12 @@ namespace SpaceInvadersGame
                 for (int i = 0; i < Alien.aliens.Count; i++)
                 {
                     _spriteBatch.Draw(alienTexture, Alien.aliens[i].position, Color.White);
+
+                }
+
+                for (int i = 0; i < Alien.bottomAliens.Count; i++)
+                {
+                    _spriteBatch.Draw(alienTexture, Alien.bottomAliens[i].position, Color.White);
 
                 }
 

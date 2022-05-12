@@ -18,6 +18,7 @@ namespace SpaceInvadersGame
         public static List<Bullet> bullets = new List<Bullet>();
         public static List<Bullet> alienBullets = new List<Bullet>();
 
+
         private int bulletSpeed = 500;
         public bool isFired = false;
         public int radius = 18;
