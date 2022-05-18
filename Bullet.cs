@@ -37,6 +37,13 @@ namespace SpaceInvadersGame
             bulletPosition.Y -= bulletSpeed * dt;  
         }
 
+        public void AlienBulletUpdate(GameTime gameTime)
+        {
+            float dt = (float)gameTime.ElapsedGameTime.TotalSeconds; //handles delta time, the time elapsed between frames
+
+            bulletPosition.Y += bulletSpeed * dt;
+        }
+
         public bool Collided // properties of the collided variable for outside use of prviate variable.
         {
             get { return collided; }

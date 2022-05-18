@@ -23,6 +23,7 @@ namespace SpaceInvadersGame
         private int speedIncrease = 0;
         private int wavecount = 1;
 
+
         public bool Update(GameTime gameTime, int textWidth) // update function.
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -76,6 +77,7 @@ namespace SpaceInvadersGame
             get { return dead; }
             set { dead = value; }
         }
+
 
     }
 }

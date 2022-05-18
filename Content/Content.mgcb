@@ -61,6 +61,30 @@
 /processorParam:TextureFormat=Color
 /build:Ship.png
 
+#begin Sounds/GameLoopAudio.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/GameLoopAudio.mp3
+
+#begin Sounds/GameOver.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/GameOver.mp3
+
+#begin Sounds/HitSound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/HitSound.mp3
+
+#begin Sounds/WaveClear.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/WaveClear.mp3
+
 #begin timerFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
